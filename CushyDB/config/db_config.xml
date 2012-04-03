@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <CushyDBConfig>
+	<driver_class>com.mysql.jdbc.Driver</driver_class>
+	<database_provider>mysql</database_provider>
+	<host_address>localhost</host_address>
+	<host_port>3306</host_port>
+	<database_name>gxt_test_db</database_name>
+	<username>root</username>
+	<password>123456</password>
+</CushyDBConfig>

@@ -142,8 +142,8 @@ Example 7 shows how to perform batch insert
 		
 ##Usage
 
-In order to use CushyDB in your project, make sure you have added cushydb-1.0.jar, mysql-connector-java-5.x.y-bin.jar, junit-4.9.jar and log4j-1.2.16.jar in your classpath.
-You can download cushydb-1.0.jar from downloads section or you can generate it using src folder of the project.
+In order to use CushyDB in your project, make sure you have added cushydb-1.0.jar, mysql-connector-java-5.1.10-bin.jar (or later), junit-4.9.jar (or later) and log4j-1.2.16.jar (or later) in your classpath.
+You can download cushydb-1.0.jar from downloads section or find it under dist folder or you can generate it using src folder of the project.
 
 Have fun.
 		

@@ -152,4 +152,33 @@ public class MySQLUpdateHandlerTest {
 			throw new AssertionError();
 		}			
 	}
+	
+	@Test
+	public void test_5_exec() throws SQLException{
+		
+		TableInfo tableInfo = TableInfo.Single("student");
+		
+		SetParameterList setParameterList = ParameterList.Set();		
+		setParameterList.add( "firstname", "updated_firstname_1");
+		
+		Container constraintContainer = Container.And();
+		constraintContainer.add( Parameter.Constraint("firstname", CompareType.LIKE, "firstname_1"));
+		
+		MySQLUpdateHandler updateHandler = new MySQLUpdateHandler( cushyDBConnection);
+		updateHandler.Update( tableInfo)
+					 .Set( setParameterList)
+					 .Where( constraintContainer).execute();
+		
+		//Check using JDBC
+		PreparedStatement preparedStatement = databaseConnection.prepareStatement("SELECT firstname FROM student WHERE lastname LIKE ?");
+		preparedStatement.setString(1, "lastname_1");
+		ResultSet resultSet = preparedStatement.executeQuery();
+		if( resultSet.next()){
+			String updatedFirstname = resultSet.getString(1);
+			assertEquals(updatedFirstname, "updated_firstname_1");
+		}
+		else{
+			throw new AssertionError();
+		}			
+	}
 }

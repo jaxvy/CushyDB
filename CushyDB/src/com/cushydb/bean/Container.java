@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.cushydb.bean.Parameter.ConstraintFunctionParameter;
 import com.cushydb.bean.Parameter.ConstraintParameter;
+import com.cushydb.enums.CompareType;
 import com.cushydb.enums.ContainerType;
+import com.cushydb.enums.FunctionType;
 
 public class Container {
 
@@ -44,11 +46,52 @@ public class Container {
 		return this;
 	}
 	
+	public Container add( String parameterName, CompareType compareType, Object parameterValue){
+		parameterList.add( Parameter.Constraint( parameterName, compareType, parameterValue));
+		return this;
+	}	
+	
+	public Container add( String parameterName, CompareType compareType, Object... parameterValueArray){
+		parameterList.add( Parameter.Constraint( parameterName, compareType, parameterValueArray));
+		return this;
+	}	
+	
+	public Container add( String tableAlias, String parameterName, CompareType compareType, Object parameterValue){
+		parameterList.add( Parameter.Constraint( tableAlias, parameterName, compareType, parameterValue));
+		return this;
+	}	
+	
+	public Container add( String tableAlias, String parameterName, CompareType compareType, Object... parameterValueArray){
+		parameterList.add( Parameter.Constraint( tableAlias, parameterName, compareType, parameterValueArray));
+		return this;
+	}
+	
 	public Container add( ConstraintFunctionParameter parameter){
 		
 		parameterList.add( parameter);
 		return this;
 	}
+	
+	public Container add( FunctionType functionType, String parameterName, CompareType compareType, Object parameterValue){
+		parameterList.add( Parameter.ConstraintFunction(functionType, parameterName, compareType, parameterValue));
+		return this;
+	}	
+	
+	public Container add( FunctionType functionType, String parameterName, CompareType compareType, Object... parameterValueArray){
+		parameterList.add( Parameter.ConstraintFunction(functionType, parameterName, compareType, parameterValueArray));
+		return this;
+	}	
+	
+	public Container add( FunctionType functionType, String tableAlias, String parameterName, CompareType compareType, Object parameterValue){
+		parameterList.add( Parameter.ConstraintFunction( functionType, tableAlias, parameterName, compareType, parameterValue));
+		return this;
+	}	
+	
+	public Container add( FunctionType functionType, String tableAlias, String parameterName, CompareType compareType, Object... parameterValueArray){
+		parameterList.add( Parameter.ConstraintFunction( functionType, tableAlias, parameterName, compareType, parameterValueArray));
+		return this;
+	}
+	
 	
 	public Container add( Join join){
 		

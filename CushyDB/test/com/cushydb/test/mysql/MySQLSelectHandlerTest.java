@@ -675,4 +675,121 @@ public class MySQLSelectHandlerTest {
 		assertEquals( note, 2.1, 0);				
 	}
 		
+	@Test
+	public void test_23_exec(){
+		
+		//Prepare data
+		TableInfo tableInfo = TableInfo.Single("grade");
+				
+		SelectParameterList selectParameterList = ParameterList.Select();
+		selectParameterList.add( "student_id");
+		selectParameterList.add( FunctionType.COUNT, "course_id");
+		selectParameterList.add( FunctionType.MIN, "grade");
+					
+		GroupByParameterList groupByParameterList = ParameterList.GroupBy();
+		groupByParameterList.addAsc( "student_id");
+		
+		Container havingContainer = Container.And();
+		havingContainer.add( Parameter.ConstraintFunction( FunctionType.COUNT, "course_id", CompareType.GR, 3));
+		
+		
+		//Perform action
+		MySQLSelectHandler selectHandler = new MySQLSelectHandler( cushyDBConnection);
+		Result result = selectHandler.Select( selectParameterList)
+									 .From( tableInfo)
+									 .GroupBy( groupByParameterList)
+									 .Having( havingContainer).execute();
+		
+		//Check result	
+		Row row1 = result.getRowList().get(0);
+		Row row2 = result.getRowList().get(1);
+		
+		int student_id_1 = row1.getColumn("student_id");
+		int student_id_2 = row2.getColumn("student_id");
+		long countCourseID = row1.getColumn("count(a.course_id)");	//count returns long!
+		String grade = row1.getColumn("min(a.grade)");
+		
+		assertEquals( student_id_1, 1);
+		assertEquals( student_id_2, 2);
+		assertEquals( countCourseID, 4);
+		assertEquals( grade, "A");				
+	}
+	
+	@Test
+	public void test_24_exec(){
+		
+		//Prepare data
+		TableInfo tableInfo = TableInfo.Single("student");
+				
+		SelectParameterList selectParameterList = ParameterList.Select();
+		selectParameterList.add( "firstname");
+		
+		Container constraintContainer = Container.And();;		
+		constraintContainer.add( "lastname", CompareType.NOT_LIKE, "%_1");
+		constraintContainer.add( "lastname", CompareType.NOT_LIKE, "%_2");
+		constraintContainer.add( "lastname", CompareType.NOT_LIKE, "%_3");
+		
+		
+		Container subConstraintContainer = Container.Or();
+		subConstraintContainer.add( "gpa", CompareType.SMEQ, 2.4);
+		subConstraintContainer.add( "gpa", CompareType.GR, 2.1);
+		
+		constraintContainer.add( subConstraintContainer);
+		
+		OrderByParameterList orderByParameterList = ParameterList.OrderBy();
+		orderByParameterList.addAsc( "firstname");
+		
+		//Perform action
+		MySQLSelectHandler selectHandler = new MySQLSelectHandler( cushyDBConnection);
+		Result result = selectHandler.Select( selectParameterList)
+									 .From( tableInfo)
+									 .Where( constraintContainer)
+									 .OrderBy( orderByParameterList).execute();
+		
+		String firstname = result.getRowList().get(0).getColumn("firstname");
+				
+		//Check result
+		assertEquals( firstname, "firstname_4");					
+	}
+	
+	@Test
+	public void test_25_exec(){
+						
+		//Prepare data
+		TableInfo tableInfo = TableInfo.Single("grade");
+				
+		SelectParameterList selectParameterList = ParameterList.Select();
+		selectParameterList.add( "student_id");
+		selectParameterList.add( FunctionType.COUNT, "course_id");
+		selectParameterList.add( FunctionType.MIN, "grade");
+					
+		GroupByParameterList groupByParameterList = ParameterList.GroupBy();
+		groupByParameterList.addAsc( "student_id");
+		
+		Container havingContainer = Container.And();
+		havingContainer.add( FunctionType.COUNT, "course_id", CompareType.GR, 3);
+		
+		
+		//Perform action
+		MySQLSelectHandler selectHandler = new MySQLSelectHandler( cushyDBConnection);
+		Result result = selectHandler.Select( selectParameterList)
+									 .From( tableInfo)
+									 .GroupBy( groupByParameterList)
+									 .Having( havingContainer).execute();
+		
+		//Check result	
+		Row row1 = result.getRowList().get(0);
+		Row row2 = result.getRowList().get(1);
+		
+		int student_id_1 = row1.getColumn("student_id");
+		int student_id_2 = row2.getColumn("student_id");
+		long countCourseID = row1.getColumn("count(a.course_id)");	//count returns long!
+		String grade = row1.getColumn("min(a.grade)");
+		
+		assertEquals( student_id_1, 1);
+		assertEquals( student_id_2, 2);
+		assertEquals( countCourseID, 4);
+		assertEquals( grade, "A");
+				
+	}
 }

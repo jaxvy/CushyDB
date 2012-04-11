@@ -307,7 +307,7 @@ public class Parameter {
 		return new SelectFunctionParameter( functionType, parameterName);
 	}
 	
-	public static SelectFunctionParameter ConstraintFunction( FunctionType functionType, String tableAlias, String parameterName){	
+	public static SelectFunctionParameter SelectFunction( FunctionType functionType, String tableAlias, String parameterName){	
 		CushyDBValidator.isInputNotNullOrThrow( functionType, "FunctionType cannot be null");
 		return new SelectFunctionParameter( functionType, tableAlias, parameterName);
 	}
@@ -360,7 +360,7 @@ public class Parameter {
 		return new GroupByParameter( parameterName, false);
 	}
 	
-	public static GroupByParameter GroupByDecs( String tableAlias, String parameterName){		
+	public static GroupByParameter GroupByDesc( String tableAlias, String parameterName){		
 		return new GroupByParameter( tableAlias, parameterName, false);
 	}	
 }

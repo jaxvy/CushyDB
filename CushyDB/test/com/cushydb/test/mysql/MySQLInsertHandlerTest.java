@@ -154,11 +154,35 @@ public class MySQLInsertHandlerTest{
 		ResultSet result = preparedStatement.executeQuery();
 		if( result.next()){
 			int count = result.getInt(1);
-			assertEquals(count, 10);
+			assertEquals(count, 11);
 		}
 		else{
 			throw new AssertionFailedError();
-		}
+		}		
+	}
+	
+	@Test	
+	public void test_5_exec(){
+			
+		//Prepare data
+		String tableName = "TABLE_NAME";
 		
+		InsertParameterList insertParameterList = ParameterList.Insert();
+		insertParameterList.add( "param1", "val1")
+					   	   .add( "param2", 1.02)
+					   	   .add( "param3", new Timestamp( System.currentTimeMillis()))
+					   	   .add( "param4", 12)
+					   	   .add( "param5", 14L);
+		
+		
+		//Perform action
+		MySQLInsertHandler insertHandler = new MySQLInsertHandler( cushyDBConnection);		
+		Result result = insertHandler.Insert( insertParameterList)
+								     .Into( tableName)
+								     .ReturnKey().execute();
+		
+		//Check results
+		int generatedKey = (int)result.getGeneratedKey();
+		assertEquals( generatedKey, 12);
 	}
 }

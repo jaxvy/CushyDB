@@ -69,8 +69,8 @@ Example 3 shows how to perform a query with join operations and table aliases (n
 	tableInfo.add("grade", "g");
 	
 	Container constraintContainer = Container.And();	
-	constraintContainer.add( Parameter.Constraint("s", "firstname", CompareType.LIKE, "%_1"));
-	constraintContainer.add( Join.Equals("s", "id", "g", "student_id"));
+	constraintContainer.add(Parameter.Constraint("s", "firstname", CompareType.LIKE, "%_1"));
+	constraintContainer.add(Join.Equals("s", "id", "g", "student_id"));
 		
 	MySQLSelectHandler selectHandler = new MySQLSelectHandler(cushyDBConnection);
 	Result result = selectHandler.From(tableInfo)
@@ -81,10 +81,10 @@ Example 4 shows how to perform a simple update operation
 	TableInfo tableInfo = TableInfo.Single("student");
 		
 	SetParameterList setParameterList = ParameterList.Set();		
-	setParameterList.add( Parameter.Set("firstname", "updated_firstname_1"));
+	setParameterList.add(Parameter.Set("firstname", "updated_firstname_1"));
 	
 	Container constraintContainer = Container.And();
-	constraintContainer.add( Parameter.Constraint("firstname", CompareType.LIKE, "firstname_1"));
+	constraintContainer.add(Parameter.Constraint("firstname", CompareType.LIKE, "firstname_1"));
 	
 	MySQLUpdateHandler updateHandler = new MySQLUpdateHandler(cushyDBConnection);
 	updateHandler.Update(tableInfo)
@@ -96,7 +96,7 @@ Example 5 shows how to perform a simple delete operation
 	TableInfo tableInfo = TableInfo.Single("grade");
 		
 	Container constraintContainer = Container.And();
-	constraintContainer.add( Parameter.Constraint("grade", CompareType.LIKE, "A"));
+	constraintContainer.add(Parameter.Constraint("grade", CompareType.LIKE, "A"));
 	// constraintContainer.add("grade", CompareType.LIKE, "A"); can also be used like this, your choice
 	
 	MySQLDeleteHandler deleteHandler = new MySQLDeleteHandler( cushyDBConnection);

@@ -22,15 +22,15 @@ Example 1 shows how the perform a simple query
 	TableInfo tableInfo = TableInfo.Single("student");
 	
 	SelectParameterList selectParameterList = ParameterList.Select();
-	selectParameterList.add( "lastname");
+	selectParameterList.add("lastname");
 	
 	Container constraintContainer = Container.And();
-	constraintContainer.add( "firstname", CompareType.LIKE, "firstname_1");
+	constraintContainer.add("firstname", CompareType.LIKE, "firstname_1");
 	
-	MySQLSelectHandler selectHandler = new MySQLSelectHandler( cushyDBConnection);
-	Result result = selectHandler.Select( selectParameterList)
-								 .From( tableInfo)
-								 .Where( constraintContainer).execute();
+	MySQLSelectHandler selectHandler = new MySQLSelectHandler(cushyDBConnection);
+	Result result = selectHandler.Select(selectParameterList)
+								 .From(tableInfo)
+								 .Where(constraintContainer).execute();
 	
 	String lastname = result.getRowList().get(0).getColumn("lastname");
 
@@ -40,27 +40,27 @@ Example 2 shows how to perform a more complex query
 	TableInfo tableInfo = TableInfo.Single("student");
 				
 	SelectParameterList selectParameterList = ParameterList.Select();
-	selectParameterList.add( "firstname");
+	selectParameterList.add("firstname");
 	
-	Container constraintContainer = Container.And();;		
-	constraintContainer.add( "lastname", CompareType.NOT_LIKE, "%_1");
-	constraintContainer.add( "lastname", CompareType.NOT_LIKE, "%_2");
-	constraintContainer.add( "lastname", CompareType.NOT_LIKE, "%_3");
+	Container constraintContainer = Container.And();		
+	constraintContainer.add("lastname", CompareType.NOT_LIKE, "%_1");
+	constraintContainer.add("lastname", CompareType.NOT_LIKE, "%_2");
+	constraintContainer.add("lastname", CompareType.NOT_LIKE, "%_3");
 		
 	Container subConstraintContainer = Container.Or();
-	subConstraintContainer.add( "gpa", CompareType.SMEQ, 2.4);
-	subConstraintContainer.add( "gpa", CompareType.GR, 2.1);
+	subConstraintContainer.add("gpa", CompareType.SMEQ, 2.4);
+	subConstraintContainer.add("gpa", CompareType.GR, 2.1);
 	
-	constraintContainer.add( subConstraintContainer);
+	constraintContainer.add(subConstraintContainer);
 	
 	OrderByParameterList orderByParameterList = ParameterList.OrderBy();
-	orderByParameterList.addAsc( "firstname");
+	orderByParameterList.addAsc("firstname");
 	
-	MySQLSelectHandler selectHandler = new MySQLSelectHandler( cushyDBConnection);
+	MySQLSelectHandler selectHandler = new MySQLSelectHandler(cushyDBConnection);
 	Result result = selectHandler.Select( selectParameterList)
-								 .From( tableInfo)
-								 .Where( constraintContainer)
-								 .OrderBy( orderByParameterList).execute();
+								 .From(tableInfo)
+								 .Where(constraintContainer)
+								 .OrderBy(orderByParameterList).execute();
 								 
 Example 3 shows how to perform a query with join operations and table aliases (note that parameters can be also be added with the Parameter factory pattern)
 
@@ -69,12 +69,12 @@ Example 3 shows how to perform a query with join operations and table aliases (n
 	tableInfo.add("grade", "g");
 	
 	Container constraintContainer = Container.And();	
-	constraintContainer.add( Parameter.Constraint( "s", "firstname", CompareType.LIKE, "%_1"));
+	constraintContainer.add( Parameter.Constraint("s", "firstname", CompareType.LIKE, "%_1"));
 	constraintContainer.add( Join.Equals("s", "id", "g", "student_id"));
 		
-	MySQLSelectHandler selectHandler = new MySQLSelectHandler( cushyDBConnection);
-	Result result = selectHandler.From( tableInfo)
-								 .Where( constraintContainer).execute();
+	MySQLSelectHandler selectHandler = new MySQLSelectHandler(cushyDBConnection);
+	Result result = selectHandler.From(tableInfo)
+								 .Where(constraintContainer).execute();
 
 Example 4 shows how to perform a simple update operation
 
@@ -86,18 +86,18 @@ Example 4 shows how to perform a simple update operation
 	Container constraintContainer = Container.And();
 	constraintContainer.add( Parameter.Constraint("firstname", CompareType.LIKE, "firstname_1"));
 	
-	MySQLUpdateHandler updateHandler = new MySQLUpdateHandler( cushyDBConnection);
-	updateHandler.Update( tableInfo)
-				 .Set( setParameterList)
-				 .Where( constraintContainer).execute();
+	MySQLUpdateHandler updateHandler = new MySQLUpdateHandler(cushyDBConnection);
+	updateHandler.Update(tableInfo)
+				 .Set(setParameterList)
+				 .Where(constraintContainer).execute();
 				 
 Example 5 shows how to perform a simple delete operation
 
 	TableInfo tableInfo = TableInfo.Single("grade");
 		
 	Container constraintContainer = Container.And();
-	constraintContainer.add( Parameter.Constraint( "grade", CompareType.LIKE, "A"));
-	// constraintContainer.add( "grade", CompareType.LIKE, "A"); can also be used like this, your choice
+	constraintContainer.add( Parameter.Constraint("grade", CompareType.LIKE, "A"));
+	// constraintContainer.add("grade", CompareType.LIKE, "A"); can also be used like this, your choice
 	
 	MySQLDeleteHandler deleteHandler = new MySQLDeleteHandler( cushyDBConnection);
 	deleteHandler.Delete()
@@ -109,12 +109,12 @@ Example 6 shows how to perform a simple insert operation
 	String tableName = "course";
 	
 	InsertParameterList insertParameterList = ParameterList.Insert();
-	insertParameterList.add( "name", "Programming");
+	insertParameterList.add("name", "Programming");
 							
 	//Perform action
 	MySQLInsertHandler insertHandler = new MySQLInsertHandler( cushyDBConnection);		
-	Result result = insertHandler.Insert( insertParameterList)
-								 .Into( tableName)
+	Result result = insertHandler.Insert(insertParameterList)
+								 .Into(tableName)
 								 .ReturnKey().execute();
 
 Example 7 shows how to perform batch insert	
@@ -122,18 +122,17 @@ Example 7 shows how to perform batch insert
 	String tableName = "course";
 				
 	InsertParameterList baseInsertParameterList = ParameterList.Insert();
-	baseInsertParameterList.add( "name", "Programming_0")
+	baseInsertParameterList.add("name", "Programming_0")
 					
-	MySQLInsertHandler insertHandler = new MySQLInsertHandler( cushyDBConnection);		
-	insertHandler.Insert( baseInsertParameterList)
-				 .Into( tableName)
+	MySQLInsertHandler insertHandler = new MySQLInsertHandler(cushyDBConnection);		
+	insertHandler.Insert(baseInsertParameterList)
+				 .Into(tableName)
 				 .ReturnKey();
 	
 	
 	for( int i = 1; i <= 9; i++){
-		
 		Object[] batchInsertParameters = {"Programming_" + i};
-		insertHandler.AddBatch( batchInsertParameters);				
+		insertHandler.AddBatch(batchInsertParameters);				
 	}
 	
 	//Perform action
